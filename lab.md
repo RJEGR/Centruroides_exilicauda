@@ -1,3 +1,4 @@
+#ssh rgomez@omica.cicese.mx 
 
 #awk 'BEGIN{OFS=","} {$1=$1; print}' samples.txt | cut -f3 -d","
 
