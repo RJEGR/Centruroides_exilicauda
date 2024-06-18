@@ -11,6 +11,9 @@ wget -c  https://busco-data.ezlab.org/v5/data/lineages/bacteria_odb10.2024-01-08
 wget -c https://busco-data.ezlab.org/v5/data/lineages/mammalia_odb10.2024-01-08.tar.gz
 
 wget -c https://busco-data.ezlab.org/v5/data/lineages/arthropoda_odb10.2024-01-08.tar.gz
+
+
+wget -c https://busco-data.ezlab.org/v5/data/lineages/mollusca_odb10.2024-01-08.tar.gz
 ```
 
 Untar
@@ -22,5 +25,5 @@ tar xvf metazoa_odb10.2024-01-08.tar.gz
 
 tar xvf eukaryota_odb10.2024-01-08.tar.gz
 
-
+tar xvf mollusca_odb10.2024-01-08.tar.gz
 ```
