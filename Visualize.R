@@ -57,12 +57,12 @@ labels <- c("Complete (C) and single-copy (S)",
 col <- structure(col, names = rev(names))
 
 figure <- df2 %>%
-  filter(my_species != "Bacteria") %>%
+  # filter(my_species != "Bacteria") %>%
   mutate(category = factor(category, levels = rev(names))) %>%
-  ggplot(aes(x = my_species, y = my_percentage, fill = category)) +
-  facet_grid(~Method) +
+  ggplot(aes(x = Method, y = my_percentage, fill = category)) +
+  facet_grid(my_species~ .) +
   geom_col(position = position_stack(reverse = TRUE), width = 0.75) +
-  scale_y_continuous(labels = scales::percent_format(scale = 100)) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
   labs(y = "% BUSCOs", x = "", caption = "Transcriptome assembly") +
   coord_flip() +
   scale_fill_manual("", values = col, labels = rev(labels)) +
