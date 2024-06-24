@@ -27,14 +27,31 @@ df1 %>% ggplot(aes(x = Sample, y = Reads, fill = Method)) +
 
 category <- "PE neither mate aligned"
 
-df1 %>%
-  mutate(Align = ifelse(Category != category, "% Alignment", "Unalignment")) %>%
-  group_by(Sample, Method, Align) %>%
-  summarise(pct_align = sum(pct_align)) %>%
-  ggplot(aes(x = Sample, y = pct_align, fill = Method)) +
-  geom_col(position = position_dodge2()) +
-  facet_grid(~ Align) +
-  coord_flip()
+p <- df1 %>%
+  mutate(Method = stringr::str_to_title(Method)) %>%
+  mutate(Align = ifelse(Category != category, "Transcriptome coverage", "Unalignment")) %>%
+  # group_by(Sample, Method, Align) %>%
+  # summarise(pct_align = sum(pct_align)) %>%
+  filter(Align == "Transcriptome coverage") %>%
+  ggplot(aes(x = Method, y = pct_align, fill = Category)) +
+  geom_col() +
+  facet_grid(Sample ~ Align, scales = "free_x") +
+  scale_y_continuous(labels = scales::percent_format(scale = 100)) +
+  labs(x = "Assembly method", y = "% Alignment") +
+  coord_flip() +
+  scale_fill_grey("") +
+  # scale_fill_manual("Assembly method", values = c("black", "grey89")) +
+  guides(fill=guide_legend(nrow = 5)) +
+  theme_bw(base_size = 12, base_family = "GillSans") +
+  theme(legend.position = "bottom", 
+    strip.background = element_rect(fill = 'grey89', color = 'white'),
+    axis.line.x = element_blank(),
+    axis.line.y = element_blank())
+
+# p
+
+ggsave(p, filename = 'alignment-methods.png', path = dir, width = 4, height = 5, device = png, dpi = 300)
+
 
 # 2)
 
@@ -56,20 +73,29 @@ labels <- c("Complete (C) and single-copy (S)",
 
 col <- structure(col, names = rev(names))
 
+my_sp_lev <- c("Arthropoda","Metazoa","Eukaryota","Mammalia","Bacteria")
+
 figure <- df2 %>%
+  mutate(facet = "Completeness") %>%
+  filter(Method != "Trinity-Longest") %>%
   # filter(my_species != "Bacteria") %>%
   mutate(category = factor(category, levels = rev(names))) %>%
+  mutate(my_species = factor(my_species, levels = my_sp_lev)) %>%
   ggplot(aes(x = Method, y = my_percentage, fill = category)) +
-  facet_grid(my_species~ .) +
+  facet_grid(my_species~ facet) +
   geom_col(position = position_stack(reverse = TRUE), width = 0.75) +
   scale_y_continuous(labels = scales::percent_format(scale = 1)) +
-  labs(y = "% BUSCOs", x = "", caption = "Transcriptome assembly") +
+  labs(y = "% BUSCOs", x = "Assembly method") +
   coord_flip() +
   scale_fill_manual("", values = col, labels = rev(labels)) +
-  theme_grey(base_size = 12, base_family = "GillSans") +
-  theme(legend.position = "top")
+  guides(fill=guide_legend(nrow = 4)) +
+  theme_bw(base_size = 12, base_family = "GillSans") +
+  theme(legend.position = "bottom", 
+    strip.background = element_rect(fill = 'grey89', color = 'white'),
+    axis.line.x = element_blank(),
+    axis.line.y = element_blank())
 
-figure
+ggsave(figure, filename = 'BUSCO-methods.png', path = dir, width = 5, height = 6, device = png, dpi = 300)
 
 
 for(i in rev(c(1:length(levels(my_species))))){
