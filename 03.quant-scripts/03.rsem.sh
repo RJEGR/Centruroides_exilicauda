@@ -5,6 +5,8 @@
 #SBATCH --mem=100GB
 #SBATCH --ntasks-per-node=20
 
+thread_count=$SLURM_NPROCS
+
 # 2. Prepare reference for rsem
 
 ref=$1 # reference.fasta file
