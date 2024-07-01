@@ -14,7 +14,7 @@ export PATH=$PATH:$EXPORT
 EXPORT=/LUSTRE/bioinformatica_data/genomica_funcional/rgomez/Software/eggnog-mapper-master
 export PATH=$PATH:$EXPORT
 
-EXPORT=/LUSTRE/bioinformatica_data/genomica_funcional/apps/tmhmm-2.0c/bin
+EXPORT=/LUSTRE/bioinformatica_data/genomica_funcional/rgomez/Software/tmhmm-2.0c/bin/
 export PATH=$PATH:$EXPORT
 
 # Load depedencies for trinotate (such as blast, hmmpress, etc)
@@ -30,3 +30,5 @@ TRINOTATE_DATA_DIR=/LUSTRE/bioinformatica_data/genomica_funcional/rgomez/Trinota
 Trinotate --db sqlite.db --run ALL --CPU $SLURM_NPROCS --transcript_fasta $FILE --transdecoder_pep ${FILE}.transdecoder.pep --trinotate_data_dir  $TRINOTATE_DATA_DIR --use_diamond
 
 exit
+
+
